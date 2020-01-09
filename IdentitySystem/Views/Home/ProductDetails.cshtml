@@ -1,0 +1,102 @@
+﻿
+<link rel="stylesheet" type="text/css" href="/Home/styles/product.css">
+<link rel="stylesheet" type="text/css" href="/Home/styles/product_responsive.css">
+
+@model Models.Models.Products
+
+@{
+    ViewData["Title"] = "ProductDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string[] Images = Model.Images.Split(",");
+}
+<br />
+<br />
+<br />
+<br />
+<br />
+<div class="product">
+    <div class="container">
+        <div class="row">
+
+            <!-- Product Image -->
+            <div class="col-lg-6">
+                <div class="product_image_slider_container">
+                    <div id="slider" class="flexslider">
+                        <ul class="slides">
+                            @foreach (var image in Images)
+                            {
+                                <li>
+                                    <img style="width:591px;height:530px;" src="~/Files/ProductsImages/@image" />
+                                </li>
+                            }
+
+                        </ul>
+                    </div>
+                    <div class="carousel_container">
+                        <div id="carousel" class="flexslider">
+                            <ul class="slides">
+                                @foreach (var image in Images)
+                                {
+                                    <li>
+                                        <div><img src="~/Files/ProductsImages/@image" /></div>
+                                    </li>
+                                }
+
+
+                            </ul>
+                        </div>
+                        <div class="fs_prev fs_nav disabled"><i class="fa fa-chevron-up" aria-hidden="true"></i></div>
+                        <div class="fs_next fs_nav"><i class="fa fa-chevron-down" aria-hidden="true"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Info -->
+            <div class="col-lg-6 product_col">
+                <div class="product_info">
+                    <div class="product_name">@Model.Name</div>
+                    <div class="product_category">In <a href="category.html">@Model.Category.Name</a></div>
+                    <div class="product_rating_container d-flex flex-row align-items-center justify-content-start">
+                        <div class="rating_r rating_r_4 product_rating"><i></i><i></i><i></i><i></i><i></i></div>
+                        <div class="product_reviews">4.7 out of (3514)</div>
+                        <div class="product_reviews_link"><a href="#">Reviews</a></div>
+                    </div>
+                    <div class="product_price">@Model.Price.ToString("c")<span></span></div>
+
+                    <div class="product_text">
+                        <p>@Model.Desc</p>
+                    </div>
+                    <div class="product_buttons">
+                        <div class="text-right d-flex flex-row align-items-start justify-content-start">
+                            <div class="product_button product_fav text-center d-flex flex-column align-items-center justify-content-center">
+                                <div><div><img src="/Home/images/heart_2.svg" class="svg" alt=""><div>+</div></div></div>
+                            </div>
+                            <div class="product_button product_cart text-center d-flex flex-column align-items-center justify-content-center">
+                                <div>
+                                    <div>
+                                        <a href="javascript:;" onclick="Submit()"><img src="/Home/images/cart.svg" class="svg" alt=""></a>
+                                        <div>+</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <form id="@Model.Id" asp-action="AddToCart" asp-controller="Cart" method="post">
+                                <input type="hidden" asp-for="Id" />
+                                <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function Submit() {
+
+          $("#@Model.Id").submit();
+    }
+
+</script>
+
+<script src="~/Home/plugins/flexslider/jquery.flexslider-min.js"></script>
+<script src="~/Home/js/product.js"></script>
